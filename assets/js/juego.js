@@ -6,6 +6,13 @@
 let deck = [];
 const tipos = ['C', 'D', 'H', 'S'];
 const especiales = ['A', 'J', 'Q', 'K']
+let puntosJugador = 0, puntosComputadora = 0;
+
+
+//Elementos del HTML
+const btnPedir = document.querySelector('#btnPedir');
+const puntosSmall = document.querySelectorAll('small');
+const divCartasJugador = document.querySelector('#jugador-cartas');
 
 
 //Esta funcion crea el deck
@@ -21,7 +28,7 @@ const crearDeck = () => {
         }
     }
     deck = _.shuffle(deck);
-    console.log(deck);
+
     return deck;
 }
 
@@ -34,26 +41,44 @@ const pedirCarta = () => {
         throw 'No hay cartas en el deck'
     }
     const carta = deck.pop(); //Quita el ultimo elemento del array
-    // console.log(deck);
+
     return carta;
 }
 
 
 //valor de una carta
-
 const valorCarta = (carta) => {
     const valor = carta.substring(0, carta.length - 1);
     // let puntos = 0;
     // if (isNaN(valor)) {
     //     puntos = (valor === 'A') ? 11 : 10;
-    //     console.log(puntos);
+    //     
     // } else {
     //     puntos = valor * 1;
     //     console.log("es un numero", puntos);
     // }
 
-    return (isNaN(valor) ? puntos = (valor === "A") ? 11 : 10 : puntos = valor * 1  )
+    return (isNaN(valor) ? puntos = (valor === "A") ? 11 : 10 : puntos = valor * 1)
 }
 // valorCarta(pedirCarta());
 
-console.log(valorCarta(pedirCarta()));
+//Eventos 
+btnPedir.addEventListener('click', function () {
+    const carta = pedirCarta();
+    puntosJugador = puntosJugador + valorCarta(carta);
+    puntosSmall[0].innerText = puntosJugador;
+
+    const imgCarta = document.createElement('img');
+    imgCarta.src = `assets/cartas/${carta}.png`;
+    imgCarta.classList.add("carta")
+    divCartasJugador.append(imgCarta);
+    
+    if (puntosJugador > 21) {
+        console.warn('Perdiste');
+        btnPedir.disabled = true;
+    } else if (puntosJugador === 21) {
+        console.warn('Ganaste');
+        btnPedir.disabled = true;
+    }
+
+})
