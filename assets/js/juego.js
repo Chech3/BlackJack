@@ -10,9 +10,13 @@ let puntosJugador = 0, puntosComputadora = 0;
 
 
 //Elementos del HTML
+const btnNuevo = document.querySelector('#btnNuevo');
 const btnPedir = document.querySelector('#btnPedir');
+const btnDetener = document.querySelector('#btnDetener');
 const puntosSmall = document.querySelectorAll('small');
 const divCartasJugador = document.querySelector('#jugador-cartas');
+const divCartasComputadora = document.querySelector('#computadora-carta');
+
 
 
 //Esta funcion crea el deck
@@ -60,9 +64,36 @@ const valorCarta = (carta) => {
 
     return (isNaN(valor) ? puntos = (valor === "A") ? 11 : 10 : puntos = valor * 1)
 }
-// valorCarta(pedirCarta());
+
+const turnoComputadora = (puntosMinimos) => {
+    do {
+        const carta = pedirCarta();
+        puntosComputadora = puntosComputadora + valorCarta(carta);
+        puntosSmall[1].innerText = puntosComputadora;
+
+        const imgCarta = document.createElement('img');
+        imgCarta.src = `assets/cartas/${carta}.png`;
+        imgCarta.classList.add("carta")
+        divCartasComputadora.append(imgCarta);
+        if (puntosComputadora > 21) {
+            break;
+        }
+    } while (puntosComputadora < puntosMinimos && puntosMinimos <= 21);
+
+}
 
 //Eventos 
+
+btnNuevo.addEventListener('click', function () {
+    window.location.reload();
+})
+
+btnDetener.addEventListener("click", function () {
+    btnPedir.disabled = true;
+    btnDetener.disabled = true;
+    turnoComputadora(puntosJugador);
+})
+
 btnPedir.addEventListener('click', function () {
     const carta = pedirCarta();
     puntosJugador = puntosJugador + valorCarta(carta);
@@ -72,13 +103,22 @@ btnPedir.addEventListener('click', function () {
     imgCarta.src = `assets/cartas/${carta}.png`;
     imgCarta.classList.add("carta")
     divCartasJugador.append(imgCarta);
-    
+
     if (puntosJugador > 21) {
         console.warn('Perdiste');
         btnPedir.disabled = true;
+        btnDetener.disabled = true;
+        turnoComputadora(puntosJugador);
     } else if (puntosJugador === 21) {
         console.warn('Ganaste');
         btnPedir.disabled = true;
+        btnDetener.disabled = true;
+        turnoComputadora(puntosJugador);
     }
 
 })
+
+
+
+
+
