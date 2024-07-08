@@ -42,7 +42,7 @@ crearDeck();
 
 const pedirCarta = () => {
     if (deck.length === 0) {
-        throw 'No hay cartas en el deck'
+        alert("no hay cartas en el deck")
     }
     const carta = deck.pop(); //Quita el ultimo elemento del array
 
@@ -80,18 +80,42 @@ const turnoComputadora = (puntosMinimos) => {
         }
     } while (puntosComputadora < puntosMinimos && puntosMinimos <= 21);
 
+    setTimeout(() => {
+        
+        if (puntosMinimos === puntosComputadora) {
+            alert("Nadie gana :( Empate");
+        } else if (puntosComputadora === 21) {
+            alert("Ha ganado la computadora")
+        } else if (puntosMinimos > 21) {
+            alert("Ha ganado la computadora")
+        }
+        else if (puntosComputadora > 21) {
+            alert("Has ganado")
+        } else {alert("Gana la computadora")}
+    }, 100);
+
+
 }
 
 //Eventos 
 
 btnNuevo.addEventListener('click', function () {
-    window.location.reload();
+    deck = [];
+    puntosComputadora = 0
+    puntosSmall[0].innerText = 0
+    puntosSmall[1].innerText = 0
+    crearDeck();
+    btnPedir.disabled = false;
+    btnDetener.disabled = false;
+
+
 })
 
 btnDetener.addEventListener("click", function () {
     btnPedir.disabled = true;
     btnDetener.disabled = true;
     turnoComputadora(puntosJugador);
+
 })
 
 btnPedir.addEventListener('click', function () {
@@ -105,15 +129,15 @@ btnPedir.addEventListener('click', function () {
     divCartasJugador.append(imgCarta);
 
     if (puntosJugador > 21) {
-        console.warn('Perdiste');
         btnPedir.disabled = true;
         btnDetener.disabled = true;
         turnoComputadora(puntosJugador);
+
     } else if (puntosJugador === 21) {
-        console.warn('Ganaste');
         btnPedir.disabled = true;
         btnDetener.disabled = true;
         turnoComputadora(puntosJugador);
+
     }
 
 })
