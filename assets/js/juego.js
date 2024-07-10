@@ -32,7 +32,7 @@ const crearDeck = () => {
         }
     }
     deck = _.shuffle(deck);
-
+    // console.log(deck);
     return deck;
 }
 
@@ -102,11 +102,14 @@ const turnoComputadora = (puntosMinimos) => {
 btnNuevo.addEventListener('click', function () {
     deck = [];
     puntosComputadora = 0
+    puntosJugador = 0
     puntosSmall[0].innerText = 0
     puntosSmall[1].innerText = 0
     crearDeck();
     btnPedir.disabled = false;
     btnDetener.disabled = false;
+    divCartasComputadora.innerHTML = "";
+    divCartasJugador.innerHTML = "";
 
 
 })
